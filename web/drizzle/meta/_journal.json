@@ -8,6 +8,13 @@
       "when": 1795754576592,
       "tag": "0000_personal_library",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1795755663174,
+      "tag": "0001_shelf_history_and_lists",
+      "breakpoints": true
     }
   ]
 }

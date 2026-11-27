@@ -5,6 +5,7 @@ export type Show = {
   year: string | null;
   genres: string[];
   sourceUrl: string;
+  productionStatus?: string | null;
 };
 
 export type Episode = {
@@ -14,6 +15,7 @@ export type Episode = {
   name: string;
   airdate: string | null;
   available: boolean;
+  special?: boolean;
 };
 
 export type ShowDetail = { show: Show; episodes: Episode[] };
@@ -77,6 +79,7 @@ function toShow(raw: unknown): Show {
     image: typeof image === "string" && image.startsWith("https://static.tvmaze.com/") ? image : null,
     year: dateOnly(raw.premiered)?.slice(0, 4) ?? null,
     genres: Array.isArray(raw.genres) ? raw.genres.filter((genre): genre is string => typeof genre === "string") : [],
+    productionStatus: typeof raw.status === "string" ? raw.status : null,
     sourceUrl: typeof raw.url === "string" && raw.url.startsWith("https://www.tvmaze.com/shows/")
       ? raw.url
       : `https://www.tvmaze.com/shows/${raw.id}`,
@@ -93,19 +96,39 @@ export async function searchShows(query: string): Promise<Show[]> {
   return matches.slice(0, 10).map(match => toShow(isRecord(match) ? match.show : null));
 }
 
-export async function getShow(id: number): Promise<ShowDetail> {
-  if (!positiveInteger(id)) throw new CatalogError(400, "Identificador de série inválido.");
-  const raw = await fetchCatalog(`/shows/${id}?embed=episodes`);
-  if (!isRecord(raw) || raw.id !== id || !isRecord(raw._embedded) || !Array.isArray(raw._embedded.episodes)) {
-    throw invalidCatalog();
+export async function browseShows(page: number, animeOnly: boolean): Promise<{ shows: Show[]; hasMore: boolean }> {
+  // The TVmaze index assigns records by ID, including gaps left by deleted shows.
+  const size = animeOnly ? 250 : 25;
+  const firstId = page * size;
+  let data: unknown;
+  try {
+    data = await fetchCatalog(`/shows?page=${Math.floor(firstId / 250)}`);
+  } catch (error) {
+    if (error instanceof CatalogError && error.status === 404) return { shows: [], hasMore: false };
+    throw error;
   }
+  if (!Array.isArray(data)) throw invalidCatalog();
+  const shows = data.map(toShow).filter(show => show.id >= firstId && show.id < firstId + size);
+  return { shows, hasMore: true };
+}
+
+export async function getShow(id: number, includeSpecials = false): Promise<ShowDetail> {
+  if (!positiveInteger(id)) throw new CatalogError(400, "Identificador de série inválido.");
+  const [raw, allEpisodes] = includeSpecials
+    ? await Promise.all([fetchCatalog(`/shows/${id}`), fetchCatalog(`/shows/${id}/episodes?specials=1`)])
+    : [await fetchCatalog(`/shows/${id}?embed=episodes`), null];
+  if (!isRecord(raw) || raw.id !== id) throw invalidCatalog();
+  const list = includeSpecials ? allEpisodes : isRecord(raw._embedded) && raw._embedded.episodes;
+  if (!Array.isArray(list)) throw invalidCatalog();
   const now = Date.now();
   // A date without an airtime has elapsed everywhere once it is yesterday in UTC−12.
   const dateInLatestZone = new Date(now - 12 * 3600_000).toISOString().slice(0, 10);
   const episodes: Episode[] = [];
-  for (const item of raw._embedded.episodes) {
+  for (const item of list) {
     if (!isRecord(item)) throw invalidCatalog();
-    if (item.type !== "regular" || !positiveInteger(item.season) || !positiveInteger(item.number)) continue;
+    const special = item.type === "significant_special" || item.type === "insignificant_special";
+    if (special && !includeSpecials) continue;
+    if (!special && (item.type !== "regular" || !positiveInteger(item.season) || !positiveInteger(item.number))) continue;
     if (!positiveInteger(item.id) || typeof item.name !== "string") throw invalidCatalog();
     const airdate = dateOnly(item.airdate);
     const timestamp = typeof item.airstamp === "string" && item.airtime
@@ -113,13 +136,15 @@ export async function getShow(id: number): Promise<ShowDetail> {
       : NaN;
     episodes.push({
       id: item.id,
-      season: item.season,
-      number: item.number,
+      season: positiveInteger(item.season) ? item.season : 0,
+      number: positiveInteger(item.number) ? item.number : 0,
       name: item.name,
       airdate,
       available: Number.isFinite(timestamp) ? timestamp <= now : airdate !== null && airdate < dateInLatestZone,
+      ...(special ? { special: true } : {}),
     });
   }
-  episodes.sort((a, b) => a.season - b.season || a.number - b.number || a.id - b.id);
+  episodes.sort((a, b) => a.season - b.season || Number(!!a.special) - Number(!!b.special)
+    || a.number - b.number || (a.airdate ?? "~").localeCompare(b.airdate ?? "~") || a.id - b.id);
   return { show: toShow(raw), episodes };
 }

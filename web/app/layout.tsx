@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Watchfolio · Biblioteca de séries",
-  description: "Organize suas séries e encontre o próximo episódio para assistir.",
+  title: "Watchfolio · Minha biblioteca",
+  description: "Organize filmes, séries e animes e registre o que você assistiu.",
   icons: { icon: "/favicon.svg" },
 };
 

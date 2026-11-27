@@ -62,3 +62,20 @@ Na prévia local, o Edge abriu *Dark* (2017). Marcar T01E01 indicou T01E02, incl
 Para estimar o custo, a tabela do Sites consultada em 27 de novembro prevê hospedagem gratuita até 31 de janeiro de 2027. A referência publicada para o período seguinte é cerca de 25 créditos por mês para um Site com banco, mais tráfego e volume de dados, descontados da franquia aplicável. O valor efetivo depende do plano e uso da conta. [Preços e franquias](https://learn.chatgpt.com/docs/sites/usage-and-cost)
 
 **Aceite no aparelho.** No Chrome do Android, entrar com a conta proprietária, buscar *Lost* (2004) e marcar o primeiro episódio. No navegador do computador, entrar com a mesma conta e abrir a série na biblioteca. Deve aparecer T01E02. Desmarcar T01E01 no computador e retomar no Android. O próximo deve voltar a T01E01. Registrar o resultado e as versões dos navegadores antes de encerrar F01.
+
+## Biblioteca de filmes, séries e animes
+
+**Confirmado em 27 de novembro de 2026.** O usuário solicitou a etapa 2 e escolheu manter os especiais em uma seção própria. O botão de próximo episódio avança apenas entre episódios regulares já exibidos, inclusive nos animes.
+
+**Regras da versão de teste.**
+
+- O catálogo combina séries e animes do TVmaze com filmes do Wikidata. As fichas conservam a origem e o ID. Um longa classificado como anime pode aparecer nos filtros de filme e de anime. Ele é registrado como uma sessão de filme. Os dados estruturados do Wikidata são CC0. A exibição de imagens de filmes considera a licença retornada pelo Wikimedia Commons. [TVmaze](https://www.tvmaze.com/api) · [Licença do Wikidata](https://www.wikidata.org/wiki/Wikidata:Licensing)
+- O catálogo também abre sem termo de busca. A navegação combina páginas reais das duas fontes e permite filtrar por gênero e situação da produção nos títulos da página atual. A busca por nome consulta diretamente os índices das fontes. Se uma fonte falhar, a interface informa a falha e apresenta os resultados da outra.
+- O estado pessoal é manual. Pode-se escolher **Quero assistir**, **Acompanhando**, **Em pausa**, **Concluído** ou **Abandonado**. Ao registrar um título novo diretamente pela marcação, um filme entra como concluído e uma série como em acompanhamento. Retirar da biblioteca preserva o histórico.
+- A primeira marcação cria uma sessão por filme ou episódio. O lote acrescenta apenas os ainda não vistos e o desfazer retira somente as sessões criadas naquele lote. Uma reassistida intencional gera outra sessão datada. Corrigir uma sessão preserva as demais.
+- Uma lista tem nome, ordem e títulos próprios. Um mesmo filme pode estar em várias listas. Retirar um título de uma lista mantém a biblioteca e o histórico. Se duas abas alterarem a mesma revisão, a segunda recebe a versão atual antes de repetir a alteração.
+- Na primeira leitura de cada conta, uma transação D1 traz os dados da versão 1. As marcações antigas usam a data UTC do registro disponível à época. As URLs antigas de séries continuam aceitas. A migração acrescenta tabelas e guarda as originais.
+
+**Verificação local no navegador.** A ficha de *A Viagem de Chihiro* foi encontrada combinando os filtros de anime, gênero e situação de produção. Uma segunda sessão recebeu data própria e sua correção preservou a primeira. Em *Lost*, desfazer um lote com E02 e E03 preservou E01. Marcar o especial *The Journey* manteve E02 como próximo. Uma lista com *Dark* e *A Viagem de Chihiro* aceitou a reordenação em uma janela de 390 pixels no Edge. Os testes do Worker cobrem também isolamento por titular, repetição de comandos e migração de um banco da versão anterior. [Teste de histórico e migração](../web/tests/shelf.test.mjs)
+
+**Aceite no aparelho.** Na mesma conta, criar uma lista no Chrome do Android, adicionar um filme e um anime e mudar a ordem. Reabri-la no computador, registrar uma reassistida com outra data e conferir as duas sessões no celular. Para testar o lote, deixar um episódio previamente visto, marcar os demais da temporada e desfazer. Conferir que o primeiro continua visto e que os especiais continuam fora da fila de próximos episódios.

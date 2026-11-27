@@ -1,0 +1,30 @@
+.lists-page {padding: 2rem 0 3rem;}
+.lists-intro {border-bottom: 1px solid var(--line); padding-bottom: 1.25rem;}
+.lists-intro > svg {color: var(--subtle); width: 1.7rem; height: 1.7rem;}
+.lists-intro h1 {font: 400 clamp(2.7rem,6vw,4.6rem)/1.05 var(--display); margin: .5rem 0;}
+.lists-intro p, .list-content > p {color: var(--subtle);}
+.lists-layout {display: grid; grid-template-columns: minmax(13rem, .7fr) minmax(0, 2fr); gap: clamp(1.25rem,4vw,4rem);}
+.list-feedback {min-height: 1.4em; margin: .7rem 0;}
+.list-form {display: flex; gap: .55rem; flex-wrap: wrap; align-items: center; margin: 0 0 1.25rem;}
+.list-form label {font-weight: 650; width: 100%;}
+.list-form input, .list-form select {font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: .4rem; min-width: 0; max-width: 100%; padding: .5rem; min-height: 2.75rem; flex: 1 1 8rem;}
+.lists-menu ul, .list-items {padding: 0; margin: 0; list-style: none;}
+.lists-menu li button {color: inherit; font: inherit; width: 100%; display: flex; justify-content: space-between; gap: .5rem; text-align: left; overflow-wrap: anywhere; border: 0; border-bottom: 1px solid var(--line); background: transparent; padding: .8rem; cursor: pointer;}
+.lists-menu li button[aria-pressed=true] {background: var(--ink); color: white; border-radius: .4rem;}
+.list-title {display:flex; justify-content: space-between; align-items: center; gap: 1rem;}
+.list-content h2 {font: 400 2rem/1.2 var(--display); overflow-wrap: anywhere; margin: 0 0 .75rem;}
+.list-items {margin-bottom: 1.5rem; counter-reset: item;}
+.list-items li {counter-increment: item; display: flex; gap: .7rem; align-items: center; padding: .7rem 0; border-bottom: 1px solid var(--line);}
+.list-items li::before {content: counter(item); color: var(--subtle); min-width: 1ch;}
+.list-items a {flex:1; overflow-wrap: anywhere; color: inherit; font-weight: 650;}
+.list-items small {display:block; font-weight: 400; color: var(--subtle);}
+.list-controls {display: flex; align-items: center; gap: .15rem;}
+.list-controls button {display:grid; place-items:center; background: var(--surface); border: 1px solid var(--line); border-radius: .35rem; color: var(--ink); min-width: 2.75rem; min-height: 2.75rem; cursor:pointer;}
+.list-controls svg {width: 1rem; height: 1rem;}
+.list-controls button:disabled {opacity:.35; cursor:default;}
+.delete-list {display:block; font:inherit; color:#85342c; background:none; border:0; text-decoration:underline; cursor:pointer; margin-top:2.25rem; padding:.5rem 0;}
+@media (max-width: 720px) {
+  .lists-layout {grid-template-columns: minmax(0, 1fr);}
+  .lists-menu {border-bottom: 1px solid var(--line); padding-bottom: 1rem;}
+  .list-items li {gap: .35rem;}
+}

@@ -1,5 +1,6 @@
 import { getChatGPTUser } from "@/app/chatgpt-auth";
 import { CatalogError } from "@/lib/catalog";
+import { ShelfError } from "@/db/shelf-types";
 
 export function parseCatalogId(value: string) {
   const id = Number(value);
@@ -16,7 +17,9 @@ export async function withLibraryUser(action: (ownerId: string) => Promise<Respo
     if (!user) return libraryJson({ error: "Entre para acessar a sua biblioteca." }, 401);
     return await action(user.userId);
   } catch (error) {
-    if (error instanceof CatalogError) return libraryJson({ error: error.message }, error.status);
+    if (error instanceof CatalogError || error instanceof ShelfError) {
+      return libraryJson({ error: error.message }, error.status);
+    }
     return libraryJson({ error: "A biblioteca está indisponível. Tente novamente." }, 503);
   }
 }

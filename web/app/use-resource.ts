@@ -28,6 +28,7 @@ export async function request<T>(url: string, options?: RequestInit): Promise<T>
 
 export function useResource<T>(url: string | null, refreshOnReturn = false) {
   const [data, setData] = useState<T | null>(null);
+  const [loadedUrl, setLoadedUrl] = useState<string | null>(null);
   const [error, setError] = useState<RequestError | null>(null);
   const controller = useRef<AbortController | null>(null);
 
@@ -39,11 +40,13 @@ export function useResource<T>(url: string | null, refreshOnReturn = false) {
     try {
       const result = await request<T>(url, { signal: current.signal });
       if (!current.signal.aborted) {
+        setLoadedUrl(url);
         setData(result);
         setError(null);
       }
     } catch (reason) {
       if (!current.signal.aborted) {
+        setLoadedUrl(url);
         const failure = reason instanceof RequestError ? reason : new RequestError("A resposta não pôde ser lida.", 0);
         setError(failure);
         if (failure.status === 401 || failure.status === 403) setData(null);
@@ -74,5 +77,5 @@ export function useResource<T>(url: string | null, refreshOnReturn = false) {
     };
   }, [refresh, refreshOnReturn]);
 
-  return { data, error, refresh };
+  return { data: loadedUrl === url ? data : null, error: loadedUrl === url ? error : null, refresh };
 }

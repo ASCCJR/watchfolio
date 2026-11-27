@@ -1,86 +1,113 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { ChevronLeft, Library, Search } from "lucide-react";
-import type { Episode, Show, ShowDetail } from "../lib/catalog";
-import { Brand, countLabel, Feedback, type LibraryData, queryPath, SearchForm, ShowGrid, Suggestions } from "./collection";
-import { SeriesDetail } from "./series-detail";
-import { request, RequestError, useResource } from "./use-resource";
+import { useState } from "react";
+import { ChevronLeft, Library } from "lucide-react";
+import type { ShelfEntry, ShelfStatus } from "../db/shelf-types";
+import type { Title, TitleDetail, TitleKind } from "../lib/titles";
+import { countLabel, Feedback, genreNames, kinds, queryPath, SearchForm, statuses, Suggestions, TitleGrid } from "./collection";
+import { SiteFrame } from "./frame";
+import { TitleView } from "./title-view";
+import { useResource } from "./use-resource";
 
-type Props = { query: string; showId: string | null; catalog: boolean };
+type Props = { query: string; titleKey: string | null; catalog: boolean; type: TitleKind | "all" };
+type FilterOption = { value: string; label: string };
 
-export function Watchfolio({ showId, query, catalog }: Props) {
-  const library = useResource<LibraryData>("/api/library", true);
-  const results = useResource<{ shows: Show[] }>(!showId && query ? "/api/catalog/search?q=" + encodeURIComponent(query) : null);
-  const detail = useResource<ShowDetail>(showId ? "/api/catalog/" + showId : null, true);
-  const [working, setWorking] = useState(false);
-  const saving = useRef(false);
-  const [failure, setFailure] = useState<RequestError | null>(null);
-  const [announcement, setAnnouncement] = useState("");
-  const lastAction = useRef<{episode?: Episode; watched?: boolean}>({});
-  const isCatalog = !showId && catalog;
-  const isLibrary = !showId && !catalog;
+function Filter({ label, value, options, change }: {
+  label: string; value: string; options: FilterOption[]; change: (value: string) => void;
+}) {
+  return <label className="filter-field"><span>{label}</span><select value={value} onChange={e => change(e.target.value)}>
+    {options.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+  </select></label>;
+}
 
-  async function update(episode?: Episode, watched?: boolean) {
-    if (saving.current || !showId || !library.data || library.error) return;
-    saving.current = true;
-    setWorking(true);
-    setFailure(null);
-    setAnnouncement("");
-    lastAction.current = { episode, watched };
-    const base = "/api/library/" + showId;
-    try {
-      await request(episode ? base + "/episodes/" + episode.id : base, { method: watched ? "DELETE" : "PUT" });
-      await library.refresh();
-      setAnnouncement(episode ? (watched ? "Marcação removida." : "Episódio marcado como visto.") : "Série adicionada à biblioteca.");
-    } catch (reason) {
-      setFailure(reason instanceof RequestError ? reason : new RequestError("Falha ao salvar a alteração.", 0));
-    } finally {
-      saving.current = false;
-      setWorking(false);
-    }
+const named = (names: Record<string, string>) => Object.entries(names).map(([value, label]) => ({ value, label }));
+const values = (all: string, names: string[]) => [
+  { value: "", label: all }, ...Array.from(new Set(names)).sort((a, b) => a.localeCompare(b, "pt-BR")).map(label => ({ value: label, label })),
+];
+const genresOf = (title: Title) => title.genres.length ? genreNames(title) : ["Sem gênero informado"];
+const productionOf = (title: Title) => title.productionStatus || "Situação a confirmar";
+
+export function Watchfolio({ titleKey, query, catalog, type: initialType }: Props) {
+  const [type, setType] = useState(initialType);
+  const [page, setPage] = useState(0);
+  const [genre, setGenre] = useState("");
+  const [production, setProduction] = useState("");
+  const [status, setStatus] = useState("");
+  const library = useResource<{ entries: ShelfEntry[] }>("/api/shelf", true);
+  const browsing = catalog && !query;
+  const catalogUrl = !catalog || titleKey ? null : browsing
+    ? "/api/titles/browse?" + new URLSearchParams({ type, page: String(page) })
+    : "/api/titles/search?" + new URLSearchParams({ q: query, type });
+  const results = useResource<{ titles: Title[]; warnings?: string[]; hasMore?: boolean }>(catalogUrl);
+  const detail = useResource<TitleDetail>(titleKey ? "/api/titles/" + encodeURIComponent(titleKey) : null, true);
+  const entries = library.data?.entries ?? [];
+  const inShelf = entries.filter(entry => entry.status !== null);
+  const candidates = catalog ? results.data?.titles ?? [] : entries.filter(entry => {
+    if (status === "removed") return entry.status === null;
+    return entry.status !== null && (!status || entry.status === status);
+  }).map(entry => entry.title);
+  const typed = candidates.filter(title => type === "all" || title.kind === type ||
+    (type === "anime" && title.kind === "movie" && genreNames(title).includes("Anime")));
+  const visible = typed.filter(title => (!genre || genresOf(title).includes(genre)) && (!production || productionOf(title) === production));
+  const loaded = catalog ? Boolean(results.data) : Boolean(library.data);
+  const withFilters = type !== "all" || Boolean(genre || production || status);
+  const currentEntry = entries.find(entry => entry.title.key === titleKey);
+  const failure = catalog ? results.error : library.error;
+  function resetFilters() {
+    setType("all");
+    setPage(0);
+    setGenre("");
+    setProduction("");
+    setStatus("");
   }
 
-  return <div className="site">
-    <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
-    <header className="masthead"><div className="masthead-inner"><Brand /><nav aria-label="Principal">
-      <a href="/" aria-current={isLibrary ? "page" : undefined}><Library size={17} aria-hidden="true" />Biblioteca</a>
-      <a href="/?buscar=1" aria-current={isCatalog ? "page" : undefined}><Search size={17} aria-hidden="true" />Catálogo</a>
-    </nav></div></header>
-    <main id="conteudo" className="container">
-    {showId ? <>
-      <a className="back-link" href={query ? queryPath(query) : "/"}><ChevronLeft size={16} aria-hidden="true" />{query ? "Voltar à busca" : "Voltar à biblioteca"}</a>
-      {detail.error && <Feedback error={detail.error} retry={detail.refresh} />}
-      {!detail.data && !detail.error && <p role="status" className="loading">Carregando série…</p>}
-      {library.error && <Feedback error={library.error} retry={library.refresh} />}
-      {failure && <Feedback error={failure} retry={() => update(lastAction.current.episode, lastAction.current.watched)} />}
-      <div className="sr-only" role="status" aria-live="polite">{working ? "Salvando…" : announcement}</div>
-      {detail.data && <SeriesDetail key={detail.data.show.id} detail={detail.data} library={library.data} disabled={working || !library.data || Boolean(library.error)} update={update} />}
-    </> : <>
-      <section className="hero" aria-labelledby="main-title"><div className="hero-copy">
-        <h1 id="main-title">{isCatalog ? "Catálogo de séries" : "Minha biblioteca"}</h1>
-        <p>{isCatalog ? "Encontre uma série para acompanhar." : "Guarde suas séries e retome do episódio em que parou."}</p>
-        <SearchForm query={query} /></div></section>
-      <section className="collection" aria-labelledby="section-title">
-        <div className="section-heading"><h2 id="section-title">{isLibrary ? "Séries acompanhadas" : query ? "Resultados da busca" : "Buscar por título"}</h2>
-          {isLibrary && library.data && <span>{countLabel(library.data.shows.length, "série", "séries")}</span>}
-          {isCatalog && results.data && <span>{countLabel(results.data.shows.length, "resultado", "resultados")}</span>}</div>
-        {isLibrary ? <>
-          {library.error && <Feedback error={library.error} retry={library.refresh} />}
-          {library.data ? library.data.shows.length ? <ShowGrid shows={library.data.shows} library={library.data} />
-            : <div className="empty-panel"><div className="empty-icon"><Library size={35} strokeWidth={1.5} aria-hidden="true" /></div><div><h3>Sua biblioteca está vazia</h3>
-              <p>Busque o título de uma série e adicione-a à biblioteca.</p><Suggestions /></div></div>
-            : !library.error && <p role="status" className="loading">Carregando biblioteca…</p>}
-        </> : query ? <>
-          <p className="result-query">Busca por “{query}”</p>
-          {results.error && <Feedback error={results.error} retry={results.refresh} />}
-          {results.data ? results.data.shows.length ? <ShowGrid shows={results.data.shows} query={query} library={library.data} />
-            : <p className="muted">Nenhuma série encontrada. Experimente outro nome ou o título original.</p>
-            : !results.error && <p role="status" className="loading">Consultando catálogo…</p>}
-        </> : <div className="catalog-prompt"><Search size={25} aria-hidden="true" /><div><p>Procure pelo nome da série ou pelo título original.</p><Suggestions /></div></div>}
-      </section>
-    </>}
-    </main>
-    <footer className="footer"><div className="footer-inner"><Brand /><p>Dados de séries por <a href="https://www.tvmaze.com/">TVmaze</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></p></div></footer>
-  </div>;
+  if (titleKey) return <SiteFrame section={null}>
+    <a className="back-link" href={query ? queryPath(query, type) : "/"}><ChevronLeft size={16} aria-hidden="true" />{query ? "Voltar à busca" : "Voltar à biblioteca"}</a>
+    {detail.error && <Feedback error={detail.error} retry={detail.refresh} />}
+    {!detail.data && !detail.error && <p role="status" className="loading">Carregando ficha…</p>}
+    {library.error && <Feedback error={library.error} retry={library.refresh} />}
+    {detail.data && <TitleView key={titleKey} detail={detail.data} entry={currentEntry}
+      accessible={Boolean(library.data) && !library.error} reload={library.refresh} />}
+  </SiteFrame>;
+
+  return <SiteFrame section={catalog ? "catalog" : "library"}>
+    <section className="hero" aria-labelledby="main-title"><div className="hero-copy">
+      <h1 id="main-title">{catalog ? "Catálogo" : "Minha biblioteca"}</h1>
+      <p>{catalog ? "Encontre filmes, séries e animes para acompanhar." : "Organize seus títulos e retome de onde parou."}</p>
+      <SearchForm query={query} type={type} />
+    </div></section>
+    <section className="collection" aria-labelledby="section-title">
+      <div className="section-heading"><h2 id="section-title">{catalog ? query ? "Resultados da busca" : "Explorar títulos" : status === "removed" ? "Fora da biblioteca" : "Meus títulos"}</h2>
+        {loaded && <span aria-live="polite">{countLabel(visible.length, "título", "títulos")}</span>}</div>
+      {(catalog || entries.length > 0) && <div className="filters">
+        <Filter label="Tipo" value={type} options={named(kinds)} change={value => {
+          setType(value as TitleKind | "all"); setPage(0); setGenre(""); setProduction("");
+        }} />
+        {!catalog && <Filter label="Na minha biblioteca" value={status} options={[
+          { value: "", label: "Todos os estados" }, ...named(statuses), { value: "removed", label: "Fora da biblioteca" },
+        ]} change={value => { setStatus(value as ShelfStatus | "removed" | ""); setGenre(""); setProduction(""); }} />}
+        <Filter label="Gênero" value={genre} options={values("Todos os gêneros", [...typed.flatMap(genresOf), ...(genre ? [genre] : [])])} change={setGenre} />
+        <Filter label="Situação da produção" value={production} options={values("Todas as situações", [...typed.map(productionOf), ...(production ? [production] : [])])} change={setProduction} />
+        {withFilters && <button type="button" className="text-action" onClick={resetFilters}>Limpar filtros</button>}
+      </div>}
+      {catalog && query && <p className="result-query">Busca por “{query}”</p>}
+      {browsing && <p className="result-query">Gênero e situação filtram os títulos desta página.</p>}
+      {failure && <Feedback error={failure} retry={catalog ? results.refresh : library.refresh} />}
+      {catalog && results.data?.warnings?.map(warning => <div className="notice" key={warning}><p>{warning}</p><button className="text-action" onClick={results.refresh}>Tentar novamente</button></div>)}
+      {visible.length > 0 && <TitleGrid titles={visible} entries={entries} query={query} type={type} />}
+      {loaded && !visible.length && <>
+        {!catalog && !inShelf.length && !withFilters ? <div className="empty-panel">
+          <div className="empty-icon"><Library size={35} strokeWidth={1.5} aria-hidden="true" /></div><div><h3>Sua biblioteca está vazia</h3>
+            <p>Busque seu primeiro filme, série ou anime para adicioná-lo.</p><Suggestions /></div>
+        </div> : <p className="muted">{status === "removed" && type === "all" && !genre && !production ? "Nenhum título retirado com sessões guardadas." : "Nenhum título encontrado. Experimente outros filtros ou outro nome."}</p>}
+      </>}
+      {!loaded && !failure && <p role="status" className="loading">{catalog ? "Consultando catálogo…" : "Carregando biblioteca…"}</p>}
+      {browsing && (loaded || page > 0) && <div className="browse-pages" aria-label="Paginação do catálogo">
+        <button className="button plain" disabled={page === 0} onClick={() => setPage(Math.max(0, page - 1))}>Anterior</button>
+        <span aria-live="polite">Página {page + 1}</span>
+        <button className="button plain" disabled={!loaded || !results.data?.hasMore} onClick={() => setPage(page + 1)}>Próxima</button>
+      </div>}
+    </section>
+  </SiteFrame>;
+
 }
