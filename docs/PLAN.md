@@ -69,6 +69,8 @@ Para estimar o custo, a tabela do Sites consultada em 27 de novembro prevê hosp
 
 **Versão privada 2, publicada em 27 de novembro de 2026.** A pasta `web/` do commit GitHub `64ca8e43c44a1fa45d63c7ffea33ef0713856d47` corresponde à árvore do commit Sites `a9fff7c0f7e48576ce246c17affeae62b412bcf5`. O Sites confirmou o sucesso da implantação e o acesso exclusivo ao proprietário. A inspeção do banco hospedado encontrou as duas tabelas da versão 1 e as cinco novas tabelas da biblioteca. [Abrir o Watchfolio](https://watchfolio.dearboot16384.chatgpt.site)
 
+Na versão 2 hospedada, em 27 de novembro, a busca por *Cidade de Deus* retornou cinco títulos. Abrir o filme de 2002 mostrou a ficha do Wikidata, o campo de data e as ações para adicionar à biblioteca ou a uma lista. A conferência foi somente de leitura.
+
 **Regras da versão de teste.**
 
 - O catálogo combina séries e animes do TVmaze com filmes do Wikidata. As fichas conservam a origem e o ID. Um longa classificado como anime pode aparecer nos filtros de filme e de anime. Ele é registrado como uma sessão de filme. Os dados estruturados do Wikidata são CC0. A exibição de imagens de filmes considera a licença retornada pelo Wikimedia Commons. [TVmaze](https://www.tvmaze.com/api) · [Licença do Wikidata](https://www.wikidata.org/wiki/Wikidata:Licensing)
