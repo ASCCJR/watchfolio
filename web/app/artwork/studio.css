@@ -1,0 +1,31 @@
+.artwork-panel {margin: 2.2rem 0; scroll-margin-block-start: 1rem;}
+.art-buttons {display: flex; align-items: center; flex-wrap: wrap; gap: .55rem 1rem;}
+.art-buttons .button[aria-expanded=true] {background: var(--ink); border-color: var(--ink); color: white;}
+.art-editor {padding: clamp(.9rem,2.4vw,1.65rem); border: 1px solid var(--line); background: var(--surface); border-radius: .65rem; margin-top: 1rem;}
+.art-editor h3 {font: 400 1.6rem/1.18 var(--display);}
+.poster-editor {display: grid; grid-template-columns: minmax(4rem,8rem) 1fr; align-items: start; gap: clamp(.7rem,2vw,1.4rem);}
+.poster-choice {display: grid; place-items: center; background: #dfe2d6; border-radius: .4rem; aspect-ratio: 2/3; overflow: hidden;}
+.poster-choice img {width: 100%; height: 100%; object-fit: cover;}
+.art-form {display: grid; gap: .65rem; min-width: 0;}
+.art-form label {display: grid; gap: .3rem; font-weight: 620; font-size: .92rem;}
+.art-form input, .art-form select, .art-form textarea {font: inherit; font-weight: 400; color: var(--ink); min-width: 0; width: 100%; max-width: 30rem;}
+.art-form textarea, .art-form select {padding: .55rem .7rem; border-radius: .4rem; border: 1px solid #bdc4b7; background: white;}
+.art-form textarea {resize: vertical; min-height: 4rem;}
+.art-form input[type=file] {font-size: .88rem;}
+.art-form input::file-selector-button {border: 1px solid var(--line); border-radius: .35rem; padding: .5rem .65rem; background: var(--paper); margin-right: .4rem;}
+.art-form .text-action {justify-self: start;}
+.art-note, .meme-workspace figcaption, .meme-gallery > p {color: var(--subtle); font-size: .92rem;}
+.art-editor [role=alert] {color: #8a3529; margin-top: .6rem;}
+.art-editor [role=status]:not(:empty) {color: #435334; margin-top: .6rem;}
+.meme-workspace {display: grid; align-items: start; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: clamp(1rem,4vw,3rem); padding-bottom: 1rem;}
+.meme-workspace figure {margin: 0; max-width: 30rem;}
+.meme-workspace canvas {display: block; width: 100%; aspect-ratio: 4/3; background: var(--ink); border-radius: .45rem;}
+.meme-gallery {margin-top: 1.5rem; border-top: 1px solid var(--line); padding-top: 1rem;}
+.meme-gallery > p {margin-top: .45rem;}
+.meme-gallery ul {padding: 0; margin: .4rem 0 0; list-style: none;}
+.meme-gallery li {padding: .6rem 0; display: flex; align-items: center; flex-wrap: wrap; justify-content: space-between; gap: .5rem 1rem; border-bottom: 1px solid var(--line); overflow-wrap: anywhere;}
+@media (max-width: 40rem) {
+  .poster-editor {grid-template-columns: minmax(0,1fr);}
+  .poster-choice {max-width: 6.5rem;}
+  .meme-workspace {grid-template-columns: minmax(0,1fr);}
+}

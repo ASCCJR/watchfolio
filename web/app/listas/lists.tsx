@@ -3,7 +3,7 @@
 import { useRef, useState, type FormEvent } from "react";
 import { ArrowDown, ArrowUp, ListOrdered, Trash2 } from "lucide-react";
 import type { Title } from "../../lib/titles";
-import { Feedback, kindNames } from "../collection";
+import { Feedback, kindNames, Poster } from "../collection";
 import type { ShelfEntry } from "../../db/shelf-types";
 import { request, RequestError, useResource } from "../use-resource";
 
@@ -92,7 +92,7 @@ export function Lists({ incomingKey }: { incomingKey: string }) {
           <button className="button dark" disabled={busy}>Salvar nome</button>
         </form>}
         {list.titles.length ? <ol className="list-items">{list.titles.map((title, index) => <li key={title.key}>
-          <a href={detailUrl(title.key)}>{title.name}<small>{[kindNames[title.kind], title.year].filter(Boolean).join(" · ")}</small></a>
+          <a href={detailUrl(title.key)}><Poster title={title} /><span>{title.name}<small>{[kindNames[title.kind], title.year].filter(Boolean).join(" · ")}</small></span></a>
           <div className="list-controls">
             <button type="button" aria-label={"Subir " + title.name} disabled={busy || index === 0} onClick={() => edit({ action: "up", key: title.key }, "Ordem atualizada.")}><ArrowUp /></button>
             <button type="button" aria-label={"Descer " + title.name} disabled={busy || index === list.titles.length - 1} onClick={() => edit({ action: "down", key: title.key }, "Ordem atualizada.")}><ArrowDown /></button>

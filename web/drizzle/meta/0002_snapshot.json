@@ -1,0 +1,617 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "bc38386f-bdde-4452-9151-a0c8e781316c",
+  "prevId": "4f092bd7-6573-4ca2-b8ae-c55e62ebd7f9",
+  "tables": {
+    "library_tvmaze_shows": {
+      "name": "library_tvmaze_shows",
+      "columns": {
+        "owner_id": {
+          "name": "owner_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "show_id": {
+          "name": "show_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "details": {
+          "name": "details",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "added_at": {
+          "name": "added_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "library_tvmaze_shows_owner_id_show_id_pk": {
+          "columns": [
+            "owner_id",
+            "show_id"
+          ],
+          "name": "library_tvmaze_shows_owner_id_show_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "personal_lists": {
+      "name": "personal_lists",
+      "columns": {
+        "owner_id": {
+          "name": "owner_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "titles": {
+          "name": "titles",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "revision": {
+          "name": "revision",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "personal_lists_owner_id_id_pk": {
+          "columns": [
+            "owner_id",
+            "id"
+          ],
+          "name": "personal_lists_owner_id_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "personal_memes": {
+      "name": "personal_memes",
+      "columns": {
+        "owner_id": {
+          "name": "owner_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_key": {
+          "name": "title_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "revision": {
+          "name": "revision",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "recipe": {
+          "name": "recipe",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "personal_memes_owner_id_title_key_id_pk": {
+          "columns": [
+            "owner_id",
+            "title_key",
+            "id"
+          ],
+          "name": "personal_memes_owner_id_title_key_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "personal_posters": {
+      "name": "personal_posters",
+      "columns": {
+        "owner_id": {
+          "name": "owner_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_key": {
+          "name": "title_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "revision": {
+          "name": "revision",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "photo": {
+          "name": "photo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "personal_posters_owner_id_title_key_pk": {
+          "columns": [
+            "owner_id",
+            "title_key"
+          ],
+          "name": "personal_posters_owner_id_title_key_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "shelf_entries": {
+      "name": "shelf_entries",
+      "columns": {
+        "owner_id": {
+          "name": "owner_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_key": {
+          "name": "title_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "details": {
+          "name": "details",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "status": {
+          "name": "status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "added_at": {
+          "name": "added_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "shelf_entries_owner_id_title_key_pk": {
+          "columns": [
+            "owner_id",
+            "title_key"
+          ],
+          "name": "shelf_entries_owner_id_title_key_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "shelf_imports": {
+      "name": "shelf_imports",
+      "columns": {
+        "owner_id": {
+          "name": "owner_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "watch_operations": {
+      "name": "watch_operations",
+      "columns": {
+        "owner_id": {
+          "name": "owner_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_key": {
+          "name": "title_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "payload": {
+          "name": "payload",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "nonce": {
+          "name": "nonce",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "watch_operations_owner_id_title_key_id_pk": {
+          "columns": [
+            "owner_id",
+            "title_key",
+            "id"
+          ],
+          "name": "watch_operations_owner_id_title_key_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "watch_sessions": {
+      "name": "watch_sessions",
+      "columns": {
+        "owner_id": {
+          "name": "owner_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_key": {
+          "name": "title_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "episode_id": {
+          "name": "episode_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "episode_label": {
+          "name": "episode_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "duration_seconds": {
+          "name": "duration_seconds",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "watched_on": {
+          "name": "watched_on",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "operation_id": {
+          "name": "operation_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "watch_sessions_item": {
+          "name": "watch_sessions_item",
+          "columns": [
+            "owner_id",
+            "title_key",
+            "episode_id"
+          ],
+          "isUnique": false
+        },
+        "watch_sessions_operation": {
+          "name": "watch_sessions_operation",
+          "columns": [
+            "owner_id",
+            "title_key",
+            "operation_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "watch_sessions_owner_id_title_key_shelf_entries_owner_id_title_key_fk": {
+          "name": "watch_sessions_owner_id_title_key_shelf_entries_owner_id_title_key_fk",
+          "tableFrom": "watch_sessions",
+          "tableTo": "shelf_entries",
+          "columnsFrom": [
+            "owner_id",
+            "title_key"
+          ],
+          "columnsTo": [
+            "owner_id",
+            "title_key"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "watch_sessions_owner_id_title_key_id_pk": {
+          "columns": [
+            "owner_id",
+            "title_key",
+            "id"
+          ],
+          "name": "watch_sessions_owner_id_title_key_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "watched_tvmaze_episodes": {
+      "name": "watched_tvmaze_episodes",
+      "columns": {
+        "owner_id": {
+          "name": "owner_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "show_id": {
+          "name": "show_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "episode_id": {
+          "name": "episode_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "watched_at": {
+          "name": "watched_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "watched_tvmaze_episodes_owner_id_show_id_library_tvmaze_shows_owner_id_show_id_fk": {
+          "name": "watched_tvmaze_episodes_owner_id_show_id_library_tvmaze_shows_owner_id_show_id_fk",
+          "tableFrom": "watched_tvmaze_episodes",
+          "tableTo": "library_tvmaze_shows",
+          "columnsFrom": [
+            "owner_id",
+            "show_id"
+          ],
+          "columnsTo": [
+            "owner_id",
+            "show_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "watched_tvmaze_episodes_owner_id_show_id_episode_id_pk": {
+          "columns": [
+            "owner_id",
+            "show_id",
+            "episode_id"
+          ],
+          "name": "watched_tvmaze_episodes_owner_id_show_id_episode_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "reaction_events": {
+      "name": "reaction_events",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "owner_id": {
+          "name": "owner_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_key": {
+          "name": "title_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title_name": {
+          "name": "title_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "episode_id": {
+          "name": "episode_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "field": {
+          "name": "field",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "reacted_on": {
+          "name": "reacted_on",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "reaction_events_target": {
+          "name": "reaction_events_target",
+          "columns": [
+            "owner_id",
+            "title_key",
+            "episode_id",
+            "field",
+            "id"
+          ],
+          "isUnique": false
+        },
+        "reaction_events_date": {
+          "name": "reaction_events_date",
+          "columns": [
+            "owner_id",
+            "reacted_on"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

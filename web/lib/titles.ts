@@ -13,7 +13,7 @@ export type Title = {
   sourceUrl: string;
   productionStatus: string | null;
 };
-export type TitleDetail = { title: Title; episodes: Episode[]; description?: string | null };
+export type TitleDetail = { title: Title; episodes: Episode[]; description?: string | null; durationSeconds?: number };
 export type TitleSearch = { titles: Title[]; warnings?: string[] };
 
 const tvStatuses: Record<string, string> = {

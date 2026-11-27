@@ -26,7 +26,7 @@ O Watchfolio pode registrar votos do usuário, calcular estatísticas e aplicar 
 
 | Tema | Questão a resolver e efeito sobre o projeto |
 | --- | --- |
-| Progresso e avaliações | O usuário confirmou em 27 de novembro de 2026 que os especiais ficam à parte e que o próximo episódio percorre os regulares. As regras adotadas na etapa 2 para estados, lotes e reassistidas estão no [plano](PLAN.md#biblioteca-de-filmes-séries-e-animes). Ainda é preciso decidir a escala de notas e a contabilização do tempo assistido. Meia estrela é uma sugestão. |
+| Progresso e avaliações | **Confirmado pelo usuário em 27 de novembro de 2026.** Especiais ficam à parte e o próximo episódio percorre os regulares. A escala de notas vai de ½ a 5 estrelas em passos de meia estrela. O tempo assistido soma todas as sessões com duração conhecida, inclusive as reassistidas. As regras de estados, lotes e reassistidas estão no [plano](PLAN.md#biblioteca-de-filmes-séries-e-animes). |
 | Calendário e conquistas | Distinguir estreia original, estreia no Brasil e chegada a um serviço. Definir fuso, alertas e antecedência. Investigar regras históricas de medalhas e adotar regras próprias identificadas onde faltar evidência. |
 | Catálogo e orçamento | Validar cobertura em português, episódios de anime e provedores no Brasil. Confirmar licença, credencial, custos do Sites no plano do usuário e eventual custo de um serviço auxiliar antes de escolher a arquitetura. |
 | Audiência | Decidir entre uso exclusivamente individual com compartilhamento de um arquivo e acesso seletivo a listas e discussões por convidados. A segunda opção exige autorização por recurso e define quem pode contribuir nas comparações. |

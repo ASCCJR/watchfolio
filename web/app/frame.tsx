@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { Library, List, Search } from "lucide-react";
+import { ChartColumn, Library, List, Search } from "lucide-react";
 
-type Section = "library" | "catalog" | "lists" | null;
+type Section = "library" | "catalog" | "lists" | "activity" | null;
 
 function Brand() {
   return <a className="brand" href="/" aria-label="Watchfolio, início"><span className="brand-mark" aria-hidden="true"><i /><i /><i /></span>Watchfolio</a>;
@@ -15,6 +15,7 @@ export function SiteFrame({ section, children }: { section: Section; children: R
         <a href="/" aria-current={section === "library" ? "page" : undefined}><Library size={17} aria-hidden="true" />Biblioteca</a>
         <a href="/?buscar=1" aria-current={section === "catalog" ? "page" : undefined}><Search size={17} aria-hidden="true" />Catálogo</a>
         <a href="/listas" aria-current={section === "lists" ? "page" : undefined}><List size={17} aria-hidden="true" />Listas</a>
+        <a href="/atividade" aria-current={section === "activity" ? "page" : undefined}><ChartColumn size={17} aria-hidden="true" />Atividade</a>
       </nav>
     </div></header>
     <main className="container" id="conteudo">{children}</main>

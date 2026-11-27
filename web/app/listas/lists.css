@@ -16,7 +16,9 @@
 .list-items {margin-bottom: 1.5rem; counter-reset: item;}
 .list-items li {counter-increment: item; display: flex; gap: .7rem; align-items: center; padding: .7rem 0; border-bottom: 1px solid var(--line);}
 .list-items li::before {content: counter(item); color: var(--subtle); min-width: 1ch;}
-.list-items a {flex:1; overflow-wrap: anywhere; color: inherit; font-weight: 650;}
+.list-items a {flex:1; min-width:0; display:flex; gap:.65rem; align-items:center; overflow-wrap:anywhere; color:inherit; font-weight:650;}
+.list-items .poster {width:clamp(2rem, 7vw, 3rem); flex-shrink:0; border-radius:.25rem;}
+.list-items .poster svg {width:1.2rem;}
 .list-items small {display:block; font-weight: 400; color: var(--subtle);}
 .list-controls {display: flex; align-items: center; gap: .15rem;}
 .list-controls button {display:grid; place-items:center; background: var(--surface); border: 1px solid var(--line); border-radius: .35rem; color: var(--ink); min-width: 2.75rem; min-height: 2.75rem; cursor:pointer;}

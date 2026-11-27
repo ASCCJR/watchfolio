@@ -4,7 +4,9 @@ import { useState } from "react";
 import { Bookmark, Film, Search } from "lucide-react";
 import type { ShelfEntry, ShelfStatus } from "../db/shelf-types";
 import type { Title, TitleKind } from "../lib/titles";
+export { genreNames } from "../lib/genres";
 import { RequestError } from "./use-resource";
+import { usePersonalPoster } from "./artwork/posters";
 
 export const kinds = { all: "Todos os tipos", movie: "Filmes", series: "Séries", anime: "Animes" };
 export const kindNames: Record<TitleKind, string> = { movie: "Filme", series: "Série", anime: "Anime" };
@@ -12,19 +14,6 @@ export const statuses: Record<ShelfStatus, string> = {
   planned: "Quero assistir", watching: "Acompanhando", paused: "Em pausa", completed: "Concluído", dropped: "Abandonado",
 };
 export const countLabel = (n: number, one: string, many: string) => n + " " + (n === 1 ? one : many);
-
-const commonGenres: Record<string, string> = {
-  action: "Ação", adventure: "Aventura", anime: "Anime", children: "Infantil", comedy: "Comédia",
-  crime: "Crime", diy: "Faça você mesmo", drama: "Drama", espionage: "Espionagem", family: "Família",
-  fantasy: "Fantasia", food: "Culinária", history: "História", horror: "Terror", legal: "Jurídico",
-  medical: "Medicina", music: "Música", mystery: "Mistério", nature: "Natureza", romance: "Romance",
-  "science-fiction": "Ficção científica", sports: "Esportes", supernatural: "Sobrenatural", thriller: "Suspense",
-  travel: "Viagem", war: "Guerra", western: "Faroeste",
-};
-
-export function genreNames(title: Title) {
-  return Array.from(new Set(title.genres.map(genre => commonGenres[genre.toLowerCase()] ?? genre)));
-}
 
 export function queryPath(query: string, type: TitleKind | "all" = "all") {
   const params = new URLSearchParams(query ? { q: query } : { buscar: "1" });
@@ -58,10 +47,16 @@ export function Suggestions() {
 }
 
 export function Poster({ title }: { title: Title }) {
-  const [broken, setBroken] = useState(false);
-  return <div className="poster">{title.image && !broken
-    ? <img src={title.image} loading="lazy" alt="" onError={() => setBroken(true)} />
-    : <Film size={32} aria-hidden="true" />}</div>;
+  const custom = usePersonalPoster(title.key);
+  return <div className="poster"><PosterImage key={JSON.stringify([custom, title.image])} custom={custom} original={title.image} /></div>;
+}
+
+function PosterImage({ custom, original }: { custom: string | null; original: string | null }) {
+  const [failed, setFailed] = useState<string[]>([]);
+  const src = [custom, original].find(url => url && !failed.includes(url));
+  return src
+    ? <img src={src} loading="lazy" alt="" onError={() => setFailed(current => [...current, src])} />
+    : <Film size={32} aria-hidden="true" />;
 }
 
 export function TitleGrid({ titles, entries, query, type }: {

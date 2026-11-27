@@ -1,11 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Check, ListPlus, Plus, RotateCcw } from "lucide-react";
+import { Check, Images, ListPlus, Plus, RotateCcw } from "lucide-react";
 import type { ShelfEntry, ShelfStatus } from "../db/shelf-types";
 import { nextEpisode } from "../lib/progress";
 import type { TitleDetail } from "../lib/titles";
 import { Feedback, genreNames, kindNames, Poster, statuses } from "./collection";
+import { ArtworkPanel } from "./artwork/panel";
+import { ReactionPanel } from "./reaction-panel";
 import { EpisodeList, episodeCode, formatDate } from "./series-detail";
 import { SessionHistory } from "./session-history";
 import { request, RequestError } from "./use-resource";
@@ -133,6 +135,7 @@ export function TitleView({ detail, entry, accessible, reload }: Props) {
           : <button type="button" className="button dark" disabled={disabled} onClick={() => saveStatus("planned")}><Plus size={18} aria-hidden="true" />Adicionar à biblioteca</button>}
         {currentStatus && <button type="button" className="text-action" disabled={disabled} title="As sessões ficam no histórico" onClick={() => change({ path: "", method: "DELETE", message: "Título retirado da biblioteca. Histórico preservado." })}>Retirar da biblioteca</button>}
         <a className="list-link" href={"/listas?titulo=" + encodeURIComponent(title.key)}><ListPlus size={17} aria-hidden="true" />Adicionar a uma lista</a>
+        <a className="list-link" href="#imagens"><Images size={17} aria-hidden="true" />Pôster e memes</a>
       </div>}
     </div></header>
     {error && <Feedback error={error} retry={() => { if (lastAction.current) void change(lastAction.current); }} />}
@@ -149,6 +152,7 @@ export function TitleView({ detail, entry, accessible, reload }: Props) {
       <div className="action-status" role="status">{working ? "Salvando…" : message}
         {undoId && <button type="button" className="text-action" onClick={() => undo(undoId)} disabled={disabled}>Desfazer último lote</button>}</div>
     </>}
+    {accessible && <ReactionPanel detail={detail} initialEpisodeId={sessions[0]?.episodeId} />}
     {!movie && <EpisodeList episodes={episodes} next={next} sessions={watched} disabled={disabled}
       mark={(ids, rewatch = false, bulk = false) => mark(ids, rewatch, bulk)} remove={remove} showHistory={id => {
         setHistoryFilter(id);
@@ -158,5 +162,6 @@ export function TitleView({ detail, entry, accessible, reload }: Props) {
       filter={historyFilter} clearFilter={() => setHistoryFilter(null)} disabled={disabled} today={today}
       correct={(id, date) => change({ path: "/sessions/" + encodeURIComponent(id), method: "PATCH", body: { watchedOn: date }, message: "Data corrigida." })}
       remove={remove} undo={undo} />}
+    {accessible && <ArtworkPanel title={title} />}
   </>;
 }

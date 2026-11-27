@@ -16,9 +16,18 @@ export type Episode = {
   airdate: string | null;
   available: boolean;
   special?: boolean;
+  durationSeconds?: number;
 };
 
+export const episodeCode = (episode: Episode) => episode.special
+  ? (episode.number ? "Especial " + episode.number : "Especial")
+  : "T" + episode.season + " · E" + String(episode.number).padStart(2, "0");
+
 export type ShowDetail = { show: Show; episodes: Episode[] };
+
+export function episodeSnapshot(episode: Episode) {
+  return { id: episode.id, seconds: episode.durationSeconds ?? null, label: episodeCode(episode) + " · " + episode.name };
+}
 
 export class CatalogError extends Error {
   readonly status: number;
@@ -50,7 +59,7 @@ function dateOnly(value: unknown): string | null {
   return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : null;
 }
 
-async function fetchCatalog(path: string): Promise<unknown> {
+export async function fetchCatalog(path: string): Promise<unknown> {
   const signal = AbortSignal.timeout(12000);
   try {
     const response = await fetch(`https://api.tvmaze.com${path}`, {
@@ -141,6 +150,7 @@ export async function getShow(id: number, includeSpecials = false): Promise<Show
       name: item.name,
       airdate,
       available: Number.isFinite(timestamp) ? timestamp <= now : airdate !== null && airdate < dateInLatestZone,
+      ...(positiveInteger(item.runtime) ? { durationSeconds: item.runtime * 60 } : {}),
       ...(special ? { special: true } : {}),
     });
   }

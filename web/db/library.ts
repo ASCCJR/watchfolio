@@ -1,4 +1,4 @@
-import type { Show } from "@/lib/catalog";
+import { episodeSnapshot, type Episode, type Show } from "@/lib/catalog";
 import type { Title } from "@/lib/titles";
 import { openShelf, readShelf } from "./shelf";
 import { ShelfError } from "./shelf-types";
@@ -19,8 +19,9 @@ export async function readLibrary(owner: string) {
   return { shows, watched };
 }
 
-export async function saveShow(owner: string, show: Show, episodeId?: number) {
+export async function saveShow(owner: string, show: Show, episode?: Episode) {
   const db = await openShelf(owner);
+  const episodeId = episode?.id;
   const { id, ...metadata } = show;
   const key = `tvmaze-${id}`;
   const title: Title = {
@@ -30,16 +31,17 @@ export async function saveShow(owner: string, show: Show, episodeId?: number) {
   const addShow = db.prepare(`INSERT INTO shelf_entries (owner_id, title_key, details, status) VALUES (?, ?, ?, ?)
     ON CONFLICT(owner_id, title_key) DO UPDATE SET status = coalesce(shelf_entries.status, excluded.status)`)
     .bind(owner, key, JSON.stringify(title), episodeId === undefined ? "planned" : "watching");
-  if (episodeId === undefined) {
+  if (!episode) {
     await addShow.run();
     return;
   }
+  const { label, seconds } = episodeSnapshot(episode);
   await db.batch([
     addShow,
-    db.prepare(`INSERT INTO watch_sessions (owner_id, title_key, id, episode_id, watched_on)
-      SELECT ?1, ?2, 'legacy-' || ?3, ?3, date('now') WHERE NOT EXISTS (
+    db.prepare(`INSERT INTO watch_sessions (owner_id, title_key, id, episode_id, watched_on, episode_label, duration_seconds)
+      SELECT ?1, ?2, 'legacy-' || ?3, ?3, date('now'), ?4, ?5 WHERE NOT EXISTS (
         SELECT 1 FROM watch_sessions WHERE owner_id = ?1 AND title_key = ?2 AND episode_id = ?3)`)
-      .bind(owner, key, episodeId),
+      .bind(owner, key, episode.id, label, seconds),
   ]);
 }
 

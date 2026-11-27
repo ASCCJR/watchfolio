@@ -6,6 +6,8 @@ O Watchfolio será um substituto pessoal do TV Time para acompanhar filmes, sér
 
 A biblioteca permite buscar filmes, séries e animes, manter uma fila pessoal e organizar listas em uma ordem própria. Na ficha, é possível registrar um filme, episódios ou uma temporada, corrigir a data e registrar uma reassistida. O próximo episódio segue a sequência regular já exibida. Os especiais ficam à parte. As marcações pertencem à conta que as criou.
 
+Depois de assistir, você pode avaliar o filme ou episódio, escolher uma emoção e votar em um personagem. Em **Atividade**, consulte sessões por dia, tempo assistido, retrospectivas anuais e conquistas pessoais. A ficha também permite trocar o pôster ou criar e baixar um meme em PNG.
+
 A versão 2 foi publicada em 27 de novembro de 2026 no Sites com acesso exclusivo ao proprietário. Entre na conta proprietária para [abrir o Watchfolio](https://watchfolio.dearboot16384.chatgpt.site).
 
 ## Por onde começar

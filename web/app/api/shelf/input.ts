@@ -19,7 +19,7 @@ export function parseStatus(value: unknown) {
   return value as ShelfStatus;
 }
 
-export function parseDate(value: unknown): string {
+export function parseCalendarDay(value: unknown): string {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
     throw new ShelfError(400, "Informe uma data no formato AAAA-MM-DD.");
   }
@@ -27,11 +27,16 @@ export function parseDate(value: unknown): string {
   if (!Number.isFinite(timestamp) || new Date(timestamp).toISOString().slice(0, 10) !== value) {
     throw new ShelfError(400, "A data informada é inválida.");
   }
+  return value;
+}
+
+export function parseDate(value: unknown): string {
+  const day = parseCalendarDay(value);
   // The visitor's calendar day can already be tomorrow in UTC+14.
-  if (value > new Date(Date.now() + 14 * 3600_000).toISOString().slice(0, 10)) {
+  if (day > new Date(Date.now() + 14 * 3600_000).toISOString().slice(0, 10)) {
     throw new ShelfError(400, "A data da sessão ainda está no futuro.");
   }
-  return value;
+  return day;
 }
 
 export function parseOperation(value: string) {

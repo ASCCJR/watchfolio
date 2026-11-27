@@ -1,4 +1,5 @@
-import type { Title } from "@/lib/titles";
+import type { Title, TitleDetail } from "@/lib/titles";
+import { episodeSnapshot } from "@/lib/catalog";
 import { getDatabase } from "./index";
 import { ShelfError, type ShelfEntry, type ShelfStatus, type WatchInput, type WatchSession } from "./shelf-types";
 
@@ -84,8 +85,14 @@ export async function isRecorded(owner: string, key: string, operation: string, 
   return Boolean(row);
 }
 
-export async function recordWatches(owner: string, title: Title, operation: string, input: WatchInput) {
+export async function recordWatches(owner: string, detail: TitleDetail, operation: string, input: WatchInput) {
   const db = await openShelf(owner);
+  const { title } = detail;
+  const episodes = new Map(detail.episodes.map(episode => [episode.id, episode]));
+  const items = input.episodeIds.map(id => {
+    if (id === null) return { id, seconds: detail.durationSeconds ?? null, label: null };
+    return episodeSnapshot(episodes.get(id)!);
+  });
   const nonce = crypto.randomUUID();
   // Only the request that first claims this operation may create sessions.
   // Keep the operation after undo so a delayed retry cannot recreate them.
@@ -97,11 +104,12 @@ export async function recordWatches(owner: string, title: Title, operation: stri
       SELECT ?1, ?2, ?5, ?6 WHERE EXISTS (${claim})
       ON CONFLICT(owner_id, title_key) DO UPDATE SET details = excluded.details`)
       .bind(owner, title.key, operation, nonce, JSON.stringify(title), title.kind === "movie" ? "completed" : "watching"),
-    db.prepare(`INSERT INTO watch_sessions (owner_id, title_key, id, episode_id, watched_on, operation_id)
-      SELECT ?1, ?2, ?3 || ':' || coalesce(e.value, 'movie'), e.value, ?5, ?3
+    db.prepare(`INSERT INTO watch_sessions (owner_id, title_key, id, episode_id, watched_on, operation_id, duration_seconds, episode_label)
+      SELECT ?1, ?2, ?3 || ':' || coalesce(e.value ->> 'id', 'movie'), e.value ->> 'id', ?5, ?3,
+        e.value ->> 'seconds', e.value ->> 'label'
       FROM json_each(?6) e WHERE EXISTS (${claim}) AND (?7 = 1 OR NOT EXISTS (
-        SELECT 1 FROM watch_sessions s WHERE s.owner_id = ?1 AND s.title_key = ?2 AND s.episode_id IS e.value
-      ))`).bind(owner, title.key, operation, nonce, input.watchedOn, JSON.stringify(input.episodeIds), Number(input.rewatch)),
+        SELECT 1 FROM watch_sessions s WHERE s.owner_id = ?1 AND s.title_key = ?2 AND s.episode_id IS (e.value ->> 'id')
+      ))`).bind(owner, title.key, operation, nonce, input.watchedOn, JSON.stringify(items), Number(input.rewatch)),
     db.prepare("SELECT payload FROM watch_operations WHERE owner_id = ? AND title_key = ? AND id = ?")
       .bind(owner, title.key, operation),
   ]);

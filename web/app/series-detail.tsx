@@ -3,11 +3,10 @@
 import { useState } from "react";
 import { Check, ChevronDown, History, Plus, RotateCcw } from "lucide-react";
 import type { Episode } from "../lib/titles";
+import { episodeCode } from "../lib/catalog";
 import { countLabel } from "./collection";
 
-export const episodeCode = (episode: Episode) => episode.special
-  ? (episode.number ? "Especial " + episode.number : "Especial")
-  : "T" + episode.season + " · E" + String(episode.number).padStart(2, "0");
+export { episodeCode };
 
 export function formatDate(date: string | null): string {
   const parts = date?.split("-");

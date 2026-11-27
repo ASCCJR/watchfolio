@@ -4,6 +4,8 @@ import type { Show } from "@/lib/catalog";
 import type { Title } from "@/lib/titles";
 import type { ShelfStatus } from "./shelf-types";
 export { personalLists } from "./list-schema";
+export { personalMemes, personalPosters } from "./artwork-schema";
+export * from "./reaction-schema";
 
 export const shelfImports = sqliteTable("shelf_imports", {
   ownerId: text("owner_id").primaryKey().notNull(),
@@ -30,6 +32,8 @@ export const watchSessions = sqliteTable("watch_sessions", {
   titleKey: text("title_key").notNull(),
   id: text("id").notNull(),
   episodeId: integer("episode_id"),
+  episodeLabel: text("episode_label"),
+  durationSeconds: integer("duration_seconds"),
   watchedOn: text("watched_on").notNull(),
   operationId: text("operation_id"),
 }, (t) => [

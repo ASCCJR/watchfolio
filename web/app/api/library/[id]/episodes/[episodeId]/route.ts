@@ -28,7 +28,7 @@ export function PUT(_request: Request, context: Context) {
       return libraryJson({ error: "O catálogo ainda não confirmou a exibição deste episódio." }, 409);
     }
 
-    await saveShow(ownerId, show, episodeId);
+    await saveShow(ownerId, show, episode);
     return libraryJson({ ok: true });
   });
 }

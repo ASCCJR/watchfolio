@@ -2,7 +2,8 @@ import { CatalogError } from "./catalog";
 import type { Title, TitleDetail } from "./titles";
 
 type Localized = Record<string, { value: string }>;
-type Claim = { rank: string; mainsnak: { datavalue?: { value: unknown } } };
+type Snak = { datavalue?: { value: unknown } };
+type Claim = { rank: string; mainsnak: Snak; qualifiers?: Record<string, Snak[]> };
 type Entity = {
   id: string;
   labels?: Localized;
@@ -101,6 +102,23 @@ function fileName(entity: Entity): string | undefined {
   return [...values(entity, "P3383"), ...values(entity, "P18")].find((name): name is string => typeof name === "string");
 }
 
+// P2047 quantities may describe different editions. An ambiguous runtime stays unknown.
+function movieSeconds(entity: Entity): number | undefined {
+  const claims = (entity.claims?.P2047 ?? []).filter(claim => claim.rank !== "deprecated");
+  const preferred = claims.filter(claim => claim.rank === "preferred");
+  const durations = new Set<number>();
+  for (const claim of preferred.length ? preferred : claims) {
+    const value = claim.mainsnak.datavalue?.value;
+    if (!value || typeof value !== "object" || !("amount" in value) || !("unit" in value)
+        || typeof value.amount !== "string" || typeof value.unit !== "string") continue;
+    const unit = value.unit.split("/").at(-1);
+    const factor = unit === "Q7727" ? 60 : unit === "Q25235" ? 3600 : unit === "Q11574" ? 1 : 0;
+    const seconds = Math.round(Number(value.amount) * factor);
+    if (Number.isSafeInteger(seconds) && seconds > 0) durations.add(seconds);
+  }
+  return durations.size === 1 ? [...durations][0] : undefined;
+}
+
 async function publicDomainImages(files: string[]): Promise<Map<string, string>> {
   const images = new Map<string, string>();
   if (!files.length) return images;
@@ -147,7 +165,7 @@ async function loadMovies(ids: string[]): Promise<TitleDetail[]> {
       genres,
       sourceUrl: `https://www.wikidata.org/wiki/${entity.id}`,
     };
-    return { title, episodes: [], description: localized(entity.descriptions) ?? null };
+    return { title, episodes: [], description: localized(entity.descriptions) ?? null, durationSeconds: movieSeconds(entity) };
   });
 }
 
@@ -174,4 +192,34 @@ export async function getMovie(id: string): Promise<TitleDetail> {
   const [movie] = await loadMovies([id]);
   if (!movie) throw new CatalogError(404, "Filme não encontrado no Wikidata.");
   return movie;
+}
+
+export async function getMovieCharacters(id: string) {
+  const record = await queryApi(wikidata, { action: "wbgetentities", ids: id, props: "claims" });
+  const movie = record.entities?.[id];
+  if (!movie || !itemIds(movie, "P31").some(item => filmClasses.includes(item))) {
+    throw new CatalogError(404, "Filme não encontrado no Wikidata.");
+  }
+  const ids = new Set(itemIds(movie, "P674"));
+  for (const credit of [...(movie.claims?.P161 ?? []), ...(movie.claims?.P725 ?? [])]) {
+    if (credit.rank === "deprecated") continue;
+    for (const role of credit.qualifiers?.P453 ?? []) {
+      const value = role.datavalue?.value;
+      if (value && typeof value === "object" && "id" in value && typeof value.id === "string") ids.add(value.id);
+    }
+  }
+  const keys = Array.from(ids).filter(key => /^Q[1-9]\d*$/.test(key));
+  const characters = [];
+  // The anonymous MediaWiki API accepts at most 50 entity IDs per request.
+  for (let start = 0; start < keys.length; start += 50) {
+    const chunk = keys.slice(start, start + 50);
+    const data = await queryApi(wikidata, { action: "wbgetentities", ids: chunk.join("|"),
+      props: "labels", languages: languages.join("|") });
+    if (!data.entities) throw new CatalogError(502, "O Wikidata não retornou os nomes dos personagens.");
+    for (const key of chunk) {
+      const name = localized(data.entities[key]?.labels);
+      if (name) characters.push({ id: "wikidata-" + key, name });
+    }
+  }
+  return characters;
 }

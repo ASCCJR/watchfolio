@@ -13,7 +13,8 @@ export function PUT(request: Request, { params }: Context) {
     parseOperation(operationId);
     const input = parseWatch(await readObject(request));
     if (await isRecorded(owner, key, operationId, input)) return libraryJson({ ok: true });
-    const { title, episodes } = await getTitle(key);
+    const detail = await getTitle(key);
+    const { title, episodes } = detail;
     if (title.kind === "movie") {
       if (input.episodeIds.length !== 1 || input.episodeIds[0] !== null) {
         throw new ShelfError(400, "Para marcar um filme, selecione o título inteiro.");
@@ -26,7 +27,7 @@ export function PUT(request: Request, { params }: Context) {
         if (!episode.available) throw new ShelfError(409, "Um dos episódios ainda não foi exibido.");
       }
     }
-    await recordWatches(owner, title, operationId, input);
+    await recordWatches(owner, detail, operationId, input);
     return libraryJson({ ok: true });
   });
 }

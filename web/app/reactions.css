@@ -1,0 +1,16 @@
+.reaction-panel { margin: 1.35rem 0; border-block: 1px solid var(--line); }
+.reaction-panel h2 { font: 400 1.65rem/1.25 var(--display); letter-spacing: -.04em; }
+.reaction-disclosure { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1rem 0; color: var(--ink); background: transparent; border: 0; text-align: left; font: inherit; }
+.reaction-disclosure[aria-expanded=true] svg { transform: rotate(180deg); }
+#reaction-content:not([hidden]) { padding-bottom: 1rem; }
+.reaction-fields { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; }
+.reaction-target { margin-bottom: .85rem; }
+.reaction-fields label { min-width: 0; }
+.reaction-fields select { max-width: min(100%, 24rem); }
+.reaction-form { display: grid; justify-items: start; gap: .75rem; }
+.reaction-form .notice { margin: 0; }
+@media (max-width: 38rem) {
+  .reaction-fields { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .reaction-fields .filter-field:last-child { grid-column: 1 / -1; }
+}

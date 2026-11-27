@@ -4,7 +4,7 @@ import { startWorker } from "./worker.mjs";
 
 const show = { id: 123, name: "Lost", genres: ["Drama"], status: "Ended", premiered: "2004-09-22" };
 const episodes = [
-  { id: 11, number: 1, type: "regular", airdate: "2004-09-22" },
+  { id: 11, number: 1, type: "regular", airdate: "2004-09-22", runtime: 44 },
   { id: 12, number: 2, type: "regular", airdate: "2004-09-29" },
   { id: 13, number: null, type: "significant_special", airdate: "2004-10-02" },
   { id: 14, number: 3, type: "regular", airdate: "2099-12-01" },
@@ -105,4 +105,19 @@ test("a biblioteca preserva o histórico antigo, desfaz somente as sessões do l
   assert.deepEqual((await history("wikidata-Q220741")).sessions, film.sessions);
   await person(`${movie}/sessions/${encodeURIComponent(film.sessions[0].id)}`, "DELETE");
   assert.equal((await history("wikidata-Q220741")).sessions.length, 1);
+});
+
+test("a consulta de duração completa uma sessão antiga somente para seu titular", async t => {
+  const { db, session } = await startWorker(t, { outboundService: catalogue, beforeMigration: seedVersionOne });
+  const route = "/api/activity/durations/tvmaze-123";
+  await session(null)(route, "POST", 401);
+  assert.deepEqual(await session("visitante")(route, "POST"), { updated: 0 });
+  const owner = session("titular");
+  await owner("/api/shelf/tvmaze-123/watches/lote", "PUT", 200, { episodeIds: [11, 12], rewatch: true, watchedOn: "2024-02-20" });
+  const updated = await Promise.all([owner(route, "POST"), owner(route, "POST")]);
+  assert.equal(updated[0].updated + updated[1].updated, 1);
+  const rows = await db.prepare("SELECT episode_id, duration_seconds, watched_on FROM watch_sessions ORDER BY id").all();
+  assert.deepEqual(rows.results.map(row => [row.episode_id, row.duration_seconds, row.watched_on]), [
+    [11, 2640, "2020-06-15"], [11, 2640, "2024-02-20"], [12, null, "2024-02-20"],
+  ]);
 });

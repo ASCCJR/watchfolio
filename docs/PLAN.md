@@ -85,3 +85,23 @@ Na versão 2 hospedada, em 27 de novembro, a busca por *Cidade de Deus* retornou
 No mesmo navegador, a primeira página do catálogo abriu 29 títulos sem termo de busca. Os filtros de gênero e situação permaneceram selecionados ao avançar de página e puderam ser limpos. *One Piece* apareceu como anime episódico. Depois de retirar *A Viagem de Chihiro* da biblioteca, o histórico mostrou as quatro sessões locais. Apagar uma delas conservou as outras três.
 
 **Aceite no aparelho.** Na mesma conta, criar uma lista no Chrome do Android, adicionar um filme e um anime e mudar a ordem. Reabri-la no computador, registrar uma reassistida com outra data e conferir as duas sessões no celular. Para testar o lote, deixar um episódio previamente visto, marcar os demais da temporada e desfazer. Conferir que o primeiro continua visto e que os especiais continuam fora da fila de próximos episódios.
+
+## Depois de assistir
+
+**Confirmado pelo usuário em 27 de novembro de 2026.** Um filme ou episódio recebe de ½ a 5 estrelas em passos de meia estrela. O tempo assistido soma todas as sessões com duração conhecida, inclusive as reassistidas. A data pessoal da sessão determina em qual ano ela entra.
+
+**Proposto para a versão de teste.**
+
+- O usuário pode registrar e retirar nota, emoção e personagem de forma independente. A média usa apenas avaliações preenchidas. A fonte do personagem é o Wikidata para filmes e o TVmaze para episódios. Quando faltar elenco, ainda se pode registrar nota e emoção.
+- A página **Atividade** reúne os totais, o histórico e a retrospectiva por ano. A retrospectiva usa a última escolha de cada tipo feita para cada filme ou episódio dentro do ano selecionado. A visão geral usa a escolha atual. Corrigir a data de uma sessão pode movê-la de um ano para outro.
+- Cada nova sessão guarda a duração informada pela fonte no momento da marcação. Quando há versões do filme com durações diferentes e nenhuma indicação inequívoca, o tempo fica desconhecido. Na atividade, o titular pode consultar a duração de um título para completar sessões antigas. O servidor preenche valores ausentes quando a fonte informa uma duração e preserva a data pessoal e as durações já registradas.
+- As medalhas pessoais refletem o histórico atual. Os limiares são uma sessão, dez episódios distintos e três filmes ou episódios com voto ativo em personagem. Cada medalha aparece uma vez. Desfazer marcações ou votos pode deixá-la pendente novamente. A medalha social segue na etapa 5.
+- O pôster personalizado e os memes ficam no banco privado já utilizado pelo Site. Para os pôsteres, o navegador prepara uma cópia de até 96 KiB, com enquadramento central. Um meme usa uma imagem própria ou um dos fundos do editor e pode ser salvo como PNG. A escolha usa arquivos compactos e dispensa um novo serviço de armazenamento.
+
+**Verificado em 27 de novembro de 2026.** Na prévia local, três sessões antigas de *A Viagem de Chihiro* passaram a somar 6 h 15 min após a consulta ao catálogo. O piloto e o especial *The Journey*, de *Lost*, elevaram o total a 8 h 15 min. O ano de 2025 apareceu vazio. No Edge a 320 e 390 pixels de largura, o histórico coube na tela e aceitou filtro por dia pelo teclado. O teste do banco conferiu a mudança de ano após corrigir a data e a atualização das medalhas após desfazer marcações e votos. [Teste da atividade](../web/tests/activity.test.mjs)
+
+Na ficha de *A Viagem de Chihiro*, a nota mudou de ½ para 5 estrelas e o personagem de Chihiro para Haku. A emoção e o personagem permaneceram ao retirar a nota. Em *Dark*, T01E01 conservou a nota de 4½ estrelas, a emoção Surpresa e o personagem Jonas Kahnwald após visitar T01E02. [Teste das reações](../web/tests/reactions.test.mjs)
+
+Em *Dark*, o pôster escolhido na prévia local foi exibido na ficha, no cartão da biblioteca e na lista mista. Restaurar trouxe a imagem do catálogo. Um meme com o fundo Azul profundo e a legenda “Quando percebo em que ano estou” foi salvo, reaberto e exportado. O Edge abriu o PNG de 800 × 600 em outra aba, com fundo e legenda visíveis. [Teste de isolamento das imagens](../web/tests/artwork.test.mjs)
+
+**A verificar nos aparelhos do usuário.** No Chrome do Android, escolher um pôster e avaliar um episódio. No computador, abrir a biblioteca com a mesma conta e conferir a nota e a capa. Restaurar o pôster do catálogo e rever a mudança no celular. A data, o aparelho e as versões dos navegadores fazem parte do registro de aceite.
