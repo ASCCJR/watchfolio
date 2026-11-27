@@ -55,6 +55,10 @@ Em 27 de novembro de 2026, o usuário confirmou Chrome no Android e autorizou a 
 
 A prova usa apenas episódios regulares numerados. A indicação do próximo episódio segue a primeira lacuna já exibida na ordem de temporada e número. Especiais, reassistidas e marcações em lote conservam critérios próprios para a etapa 2. Gravações pessoais dependem da identidade do Sites e do banco D1.
 
+**Versão privada 1, publicada em 27 de novembro de 2026.** A pasta `web/` do commit GitHub `ec25bd660813f5f29476b4ea4acd204cf102908a` corresponde à árvore do commit Sites `97bcf3278eb5baa6cb643a2143d77222c0c85e8f`. A implantação terminou com sucesso. A política de acesso retornou somente o proprietário, e a inspeção do D1 hospedado confirmou as duas tabelas de séries e episódios vistos.
+
+Na prévia local, o Edge abriu *Dark* (2017). Marcar T01E01 indicou T01E02, inclusive após recarregar. Desmarcar T01E01 restaurou a indicação original. A busca e a ficha também foram verificadas em um viewport de 390 × 844 pixels. O aceite em dois aparelhos com a conta real continua pendente.
+
 Para estimar o custo, a tabela do Sites consultada em 27 de novembro prevê hospedagem gratuita até 31 de janeiro de 2027. A referência publicada para o período seguinte é cerca de 25 créditos por mês para um Site com banco, mais tráfego e volume de dados, descontados da franquia aplicável. O valor efetivo depende do plano e uso da conta. [Preços e franquias](https://learn.chatgpt.com/docs/sites/usage-and-cost)
 
 **Aceite no aparelho.** No Chrome do Android, entrar com a conta proprietária, buscar *Lost* (2004) e marcar o primeiro episódio. No navegador do computador, entrar com a mesma conta e abrir a série na biblioteca. Deve aparecer T01E02. Desmarcar T01E01 no computador e retomar no Android. O próximo deve voltar a T01E01. Registrar o resultado e as versões dos navegadores antes de encerrar F01.

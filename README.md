@@ -6,6 +6,8 @@ O Watchfolio será um substituto pessoal do TV Time para acompanhar filmes, sér
 
 A primeira versão permite buscar uma série no TVmaze, adicioná-la à biblioteca e marcar ou desmarcar episódios. A ficha indica o próximo episódio regular já exibido. As marcações ficam em D1 e pertencem à conta que as criou. A cobertura de filmes, animes e disponibilidade brasileira segue no plano.
 
+A versão 1 foi publicada em 27 de novembro de 2026 no Sites com acesso exclusivo ao proprietário. Para abri-la, entre na conta proprietária e selecione **Watchfolio** na lista de Sites.
+
 ## Por onde começar
 
 | Documento | Quando consultar |
