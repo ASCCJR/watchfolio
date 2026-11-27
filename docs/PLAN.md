@@ -88,6 +88,8 @@ No mesmo navegador, a primeira página do catálogo abriu 29 títulos sem termo 
 
 ## Depois de assistir
 
+**Versão privada 3, publicada em 27 de novembro de 2026.** A pasta `web/` do commit GitHub `7a703a33aae66ceacd6bbad38e6c83b7acef6330` tem a mesma árvore do commit Sites `cf106b06fb6705ebcf677fef92f36a52e289f245`. O Sites confirmou a implantação e o acesso exclusivo ao proprietário. O D1 hospedado exibiu as dez tabelas esperadas, incluindo as três novas de reações, pôsteres e memes. A página Atividade abriu na conta proprietária com estatísticas, histórico e conquistas. As gravações usadas nos testes ficaram na base local. [Abrir Atividade](https://watchfolio.dearboot16384.chatgpt.site/atividade)
+
 **Confirmado pelo usuário em 27 de novembro de 2026.** Um filme ou episódio recebe de ½ a 5 estrelas em passos de meia estrela. O tempo assistido soma todas as sessões com duração conhecida, inclusive as reassistidas. A data pessoal da sessão determina em qual ano ela entra.
 
 **Proposto para a versão de teste.**
