@@ -1,6 +1,6 @@
 # Matriz de funcionalidades
 
-**Em 26 de novembro de 2026, os 28 itens estão pendentes de implementação e verificação.** Cada ID acompanha uma experiência até o teste pelo usuário. As referências remetem às [fontes do projeto](PROJECT_BRIEF.md#fontes-consultadas). Os critérios abaixo são propostas de aceite para o Watchfolio.
+Os 28 itens foram levantados em 26 de novembro de 2026. Cada ID acompanha uma experiência até a verificação do critério na última coluna. As referências remetem às [fontes do projeto](PROJECT_BRIEF.md#fontes-consultadas).
 
 **Evidência da biblioteca em 27 de novembro de 2026.** As consultas reais trouxeram *Cidade de Deus* (filme), *Naruto* (anime episódico), *A Viagem de Chihiro* (filme de anime) e *Lost* (série com especiais). A integração do Worker compilado com D1 descartável verificou os registros da versão 1, estados pessoais, marcações concorrentes, lotes, correção de sessões, reassistidas, a ordem de uma lista mista e o isolamento entre titulares. F01 e a conferência da lista em dois aparelhos continuam pendentes de aceite no Android e no computador do usuário. [Testes da biblioteca](../web/tests/shelf.test.mjs) · [Testes de listas](../web/tests/lists.test.mjs) · [Roteiro de aceite](PLAN.md#biblioteca-de-filmes-séries-e-animes)
 

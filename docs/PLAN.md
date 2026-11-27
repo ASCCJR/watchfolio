@@ -67,6 +67,8 @@ Para estimar o custo, a tabela do Sites consultada em 27 de novembro prevê hosp
 
 **Confirmado em 27 de novembro de 2026.** O usuário solicitou a etapa 2 e escolheu manter os especiais em uma seção própria. O botão de próximo episódio avança apenas entre episódios regulares já exibidos, inclusive nos animes.
 
+**Versão privada 2, publicada em 27 de novembro de 2026.** A pasta `web/` do commit GitHub `64ca8e43c44a1fa45d63c7ffea33ef0713856d47` corresponde à árvore do commit Sites `a9fff7c0f7e48576ce246c17affeae62b412bcf5`. O Sites confirmou o sucesso da implantação e o acesso exclusivo ao proprietário. A inspeção do banco hospedado encontrou as duas tabelas da versão 1 e as cinco novas tabelas da biblioteca. [Abrir o Watchfolio](https://watchfolio.dearboot16384.chatgpt.site)
+
 **Regras da versão de teste.**
 
 - O catálogo combina séries e animes do TVmaze com filmes do Wikidata. As fichas conservam a origem e o ID. Um longa classificado como anime pode aparecer nos filtros de filme e de anime. Ele é registrado como uma sessão de filme. Os dados estruturados do Wikidata são CC0. A exibição de imagens de filmes considera a licença retornada pelo Wikimedia Commons. [TVmaze](https://www.tvmaze.com/api) · [Licença do Wikidata](https://www.wikidata.org/wiki/Wikidata:Licensing)
@@ -77,5 +79,7 @@ Para estimar o custo, a tabela do Sites consultada em 27 de novembro prevê hosp
 - Na primeira leitura de cada conta, uma transação D1 traz os dados da versão 1. As marcações antigas usam a data UTC do registro disponível à época. As URLs antigas de séries continuam aceitas. A migração acrescenta tabelas e guarda as originais.
 
 **Verificação local no navegador.** A ficha de *A Viagem de Chihiro* foi encontrada combinando os filtros de anime, gênero e situação de produção. Uma segunda sessão recebeu data própria e sua correção preservou a primeira. Em *Lost*, desfazer um lote com E02 e E03 preservou E01. Marcar o especial *The Journey* manteve E02 como próximo. Uma lista com *Dark* e *A Viagem de Chihiro* aceitou a reordenação em uma janela de 390 pixels no Edge. Os testes do Worker cobrem também isolamento por titular, repetição de comandos e migração de um banco da versão anterior. [Teste de histórico e migração](../web/tests/shelf.test.mjs)
+
+No mesmo navegador, a primeira página do catálogo abriu 29 títulos sem termo de busca. Os filtros de gênero e situação permaneceram selecionados ao avançar de página e puderam ser limpos. *One Piece* apareceu como anime episódico. Depois de retirar *A Viagem de Chihiro* da biblioteca, o histórico mostrou as quatro sessões locais. Apagar uma delas conservou as outras três.
 
 **Aceite no aparelho.** Na mesma conta, criar uma lista no Chrome do Android, adicionar um filme e um anime e mudar a ordem. Reabri-la no computador, registrar uma reassistida com outra data e conferir as duas sessões no celular. Para testar o lote, deixar um episódio previamente visto, marcar os demais da temporada e desfazer. Conferir que o primeiro continua visto e que os especiais continuam fora da fila de próximos episódios.
