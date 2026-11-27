@@ -25,7 +25,7 @@ export function SearchForm({ query }: { query: string }) {
   return <form className="search-form" action="/" method="get" role="search">
     <Search aria-hidden="true" size={20} />
     <label className="sr-only" htmlFor="busca">Nome da série</label>
-    <input id="busca" name="q" type="search" placeholder="Busque uma série pelo nome" defaultValue={query} required maxLength={100} />
+    <input id="busca" name="q" type="search" placeholder="Nome da série" defaultValue={query} required maxLength={100} />
     <button type="submit">Buscar</button>
   </form>;
 }
