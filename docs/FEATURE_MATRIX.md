@@ -1,0 +1,57 @@
+# Matriz de funcionalidades
+
+**Em 26 de novembro de 2026, os 28 itens estão pendentes de implementação e verificação.** Cada ID acompanha uma experiência até o teste pelo usuário. As referências remetem às [fontes do projeto](PROJECT_BRIEF.md#fontes-consultadas). Os critérios abaixo são propostas de aceite para o Watchfolio.
+
+**A fazer** indica resultado suficientemente definido para planejar. **A definir** indica uma regra ou escolha de produto em aberto. **A validar** indica uma dependência externa ou de plataforma que precisa de prova. Ao concluir um item, registrar o teste realizado e o resultado. Uma maquete com dados fictícios ou um botão sem operação deixa o item pendente.
+
+As dependências identificam o tipo de trabalho. **App** cobre lógica e persistência próprias, **Dados** depende de catálogo ou serviço externo, **Aparelho** exige teste no sistema real e **Pessoas** exige participantes para produzir conteúdo ou comparações coletivas.
+
+## Biblioteca e acompanhamento
+
+| ID e recurso | Resultado esperado | Evidência | Dependências | Estado | Critério de conclusão |
+| --- | --- | --- | --- | --- | --- |
+| F01 · Acesso e persistência | Retomar a biblioteca pessoal pelo navegador em ambos os aparelhos. | Pedido, S1 | App, Aparelho, identidade e banco | A validar | Com a mesma conta, salvar no celular, fechar a sessão e ler e editar o registro no computador. Confirmar a edição no celular e a proteção do registro diante de outra identidade. |
+| F02 · Catálogo | Consultar filmes, séries e animes com imagem, ficha e episódios organizados em temporadas. | Pedido, TV1, M1, M2 | App, Dados | A validar | Buscar um filme, uma série com especiais e um anime reais. Abrir cada ficha, conferir IDs e ordem dos episódios com a fonte e verificar o comportamento sem tradução ou imagem. |
+| F03 · Busca e filtros | Encontrar títulos por nome e explorar por gênero e situação do título. | TV1, Pedido | App, Dados | A fazer | Localizar homônimos por tipo e ano, combinar gênero e situação de produção, limpar os filtros e obter um estado vazio para uma consulta sem resultados. |
+| F04 · Biblioteca e fila | Guardar o que se quer ver, organizar o que se acompanha e mudar o estado pessoal. | TV1, Pedido | App, Dados | A definir | Adicionar filme e série, mover entre os estados aprovados, reabrir a fila e remover um título. Verificar o tratamento acordado do histórico após a remoção. |
+| F05 · Marcação individual e em lote | Registrar filmes e episódios vistos, inclusive vários episódios ou uma temporada. | TV1, TV3, Pedido | App, Dados | A definir | Marcar um filme e um episódio, completar os episódios selecionados de uma temporada parcialmente vista e repetir a operação. Conferir os totais, desfazer o lote e preservar a marcação anterior. |
+| F06 · Próximo episódio | Retomar pelo episódio correto e distinguir episódio futuro e série em dia. | TV1, Pedido | App, Dados | A definir | Em série com lacuna no meio, encontrar o primeiro episódio elegível pela ordem acordada. Marcar, desmarcar e atingir o último disponível. Conferir a indicação para episódio futuro ou data desconhecida. |
+| F07 · Reassistidas | Registrar outra sessão do mesmo filme ou episódio com data própria. | Pedido, regra histórica a verificar | App | A definir | Registrar duas sessões em datas diferentes. Conferir um título único e duas sessões no histórico, os totais pela regra escolhida e a correção isolada de uma sessão. |
+
+## Reações, histórico e personalização
+
+| ID e recurso | Resultado esperado | Evidência | Dependências | Estado | Critério de conclusão |
+| --- | --- | --- | --- | --- | --- |
+| F08 · Notas | Atribuir e revisar uma nota a um filme ou episódio. | TV1, Pedido | App, escala | A definir | Avaliar ambos os tipos, testar os limites da escala aprovada, alterar e retirar a avaliação. Conferir o valor nos dois aparelhos e como o resumo trata uma nota ausente. |
+| F09 · Emoções e personagem favorito | Guardar as reações pessoais e votar em um personagem do título ou episódio. | TV1 | App, Dados de elenco e personagens | A validar | Selecionar emoção e personagem identificável, reabrir e trocar a escolha. Testar episódio sem elenco conhecido e manter o voto anterior vinculado ao personagem correto. |
+| F10 · Histórico e estatísticas | Consultar sessões por data, totais vistos e tempo de consumo. | TV1, Pedido | App, Dados de duração | A fazer | Com um histórico de datas e durações conhecidas, comparar contagens e tempo com cálculo manual. Corrigir uma data, incluir uma reassistida e identificar duração ausente no resultado. |
+| F11 · Retrospectiva anual | Rever o ano pessoal por títulos e preferências, inclusive gêneros e personagens quando houver dados. | TV2 | App, Dados | A fazer | Registrar sessões e votos em dois anos, abrir cada retrospectiva e conferir os títulos, contagens e favoritos do período. Um ano vazio deve aparecer como tal. |
+| F12 · Conquistas e medalhas | Ganhar medalhas por assistir, votar ou interagir conforme regras documentadas. | TV1 | App, Pessoas nas regras sociais | A definir | Exercitar cada categoria de regra aprovada logo abaixo e no limiar, verificar a concessão uma única vez e conferir o efeito acordado de desfazer a ação. |
+| F13 · Listas personalizadas | Criar e organizar coleções próprias de filmes e séries. | TV1 | App | A fazer | Criar uma lista mista, acrescentar, ordenar e retirar títulos, renomear e reabrir em outro aparelho. A biblioteca pessoal deve conservar os títulos retirados apenas da lista. |
+| F14 · Compartilhamento de listas | Entregar a outra pessoa a seleção escolhida com a visibilidade acordada. | TV1, Pedido | App, Pessoas, política de acesso | A definir | Um destinatário abre a lista ou cópia compartilhada e vê somente os campos escolhidos. Para link restrito, testar acesso permitido, negado e revogado. Para arquivo, verificar o conteúdo fora da conta. |
+| F15 · Pôster personalizado | Escolher uma imagem para representar um título na biblioteca pessoal. | TV1 | App, Dados ou arquivo autorizado | A definir | Trocar um pôster, vê-lo na biblioteca no segundo aparelho e restaurar o original. Verificar que a troca afeta somente a coleção do titular. |
+| F16 · Criação de memes | Criar e guardar uma imagem com legenda sobre um momento. | TV1, TV3 | App, mídia autorizada, armazenamento | A fazer | Escolher uma imagem de uso permitido, editar a legenda e salvar. Abrir o meme gerado fora do editor e conferir que imagem e texto aparecem no arquivo final. |
+
+## Lançamentos e descoberta
+
+| ID e recurso | Resultado esperado | Evidência | Dependências | Estado | Critério de conclusão |
+| --- | --- | --- | --- | --- | --- |
+| F17 · Calendário | Ver lançamentos de filmes e episódios acompanhados, com a natureza e a precisão da data. | TV1, Pedido, M2 | App, Dados | A definir | Conferir uma estreia de filme e um episódio com a fonte e região aplicáveis. Testar mudança de data, ausência de horário e título sem data. O item adiado deve sair do dia antigo. |
+| F18 · Alertas | Receber um aviso de lançamento com a aplicação fechada e controlar as inscrições. | TV1, W1 | App, Dados, Aparelho, agendador e envio | A validar | Em cada plataforma declarada compatível, permitir avisos e receber um no horário combinado com o app fechado. Tocar para abrir o título, repetir o envio sem duplicá-lo e testar permissão negada e cancelamento. |
+| F19 · Recomendações pessoais | Descobrir títulos a partir do que o usuário viu e avaliou. | TV1, M4 | App, Dados, histórico | A validar | Conferir sugestões para biblioteca vazia e para dois históricos distintos, a razão de uma sugestão e o efeito de marcar um recomendado como visto ou dispensado. |
+| F20 · Tendências | Explorar o que está em alta, com origem e período identificados. | TV1, TV2, M4 | App, Dados ou Pessoas | A validar | Comparar itens e janela com a resposta real da fonte escolhida e conferir rótulos de origem e período. Se a fonte falhar, exibir o último dado datado ou a indisponibilidade. |
+| F21 · Onde assistir no Brasil | Ver onde o título consta para assinatura, aluguel, compra ou outra modalidade disponível. | TV1, M3 | App, Dados regionais | A validar | Conferir um filme e uma série com o retorno para BR, os créditos e o link fornecido. Testar BR ausente e título presente só em outro país. A falta de dado deve ficar explícita. |
+
+## Comunidade e plataformas
+
+| ID e recurso | Resultado esperado | Evidência | Dependências | Estado | Critério de conclusão |
+| --- | --- | --- | --- | --- | --- |
+| F22 · Comentários e resenhas | Escrever sobre o filme ou episódio e ler contribuições visíveis naquele contexto. | TV1, TV3 | App, Pessoas para discussão | A definir | Escrever, editar e apagar uma resenha e responder a um comentário no episódio correto. Com duas identidades, conferir autoria, permissão para editar e audiência. |
+| F23 · Proteção contra spoilers | Ler e navegar com conteúdo sensível oculto até o momento apropriado. | TV1, regras a verificar | App, progresso, marcação de conteúdo | A definir | Antes de ver um episódio futuro, testar texto e imagem marcados na ficha e no feed. Revelar deliberadamente, alterar o progresso e conferir a regra definida, inclusive em prévias e alertas. |
+| F24 · Feed e interações | Descobrir conteúdo relevante e, quando houver participantes, acompanhar atividade compartilhada e curtir publicações com mídia. | TV3, TV4 | App, Dados, Pessoas, audiência | A definir | No perfil individual, conferir a origem dos itens sugeridos e o estado sem atividade compartilhada. Com convidados autorizados, publicar mídia, curtir e remover a curtida. Verificar visibilidade e atualização do feed. |
+| F25 · Enquetes e comparações | Comparar votos de emoções e personagens e participar de enquetes por episódio. | TV1, TV3 | App, Pessoas ou agregado externo licenciado | A definir | Conferir o estado sem participantes. Com duas pessoas, votar, trocar um voto e comparar totais e denominador com os registros. Conferir a origem de qualquer agregado externo. |
+| F26 · Instalação como PWA | Avaliar e oferecer abertura pela tela inicial ou pelo sistema quando suportada. | Pedido, W1 | App, Aparelho, hospedagem HTTPS | A validar | Por navegador e sistema previstos, instalar, abrir fora da aba original, autenticar, fechar e retomar no mesmo registro. Registrar versões e diferenças em relação ao acesso por URL. |
+| F27 · Widget da tela inicial | Consultar a fila e os próximos lançamentos em um widget do sistema. | TV1, W2 | App, Aparelho, integração do sistema | A validar | Adicionar o widget pelo seletor do sistema, marcar um episódio no Site e verificar que a fila e o próximo lançamento se atualizam. Abrir o item correspondente pelo widget. |
+| F28 · Widget da tela de bloqueio | Consultar a fila ou o próximo lançamento na superfície de bloqueio compatível, com privacidade configurada. | TV1, W2 | App, Aparelho, integração do sistema | A validar | Instalar e observar o widget com o aparelho bloqueado, testar conteúdo permitido, atualização e abertura após autenticação. Registrar resultado por aparelho e superfície. |
+
+Se uma dependência falhar, registrar o que foi testado, para qual plataforma e qual alternativa preserva o resultado esperado. A decisão sobre seguir com uma implementação específica fica no [plano](PLAN.md). Backup, tema e IA continuam como [decisões em aberto](PROJECT_BRIEF.md#decisões-em-aberto).
