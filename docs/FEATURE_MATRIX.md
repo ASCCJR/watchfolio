@@ -2,6 +2,8 @@
 
 **Em 26 de novembro de 2026, os 28 itens estão pendentes de implementação e verificação.** Cada ID acompanha uma experiência até o teste pelo usuário. As referências remetem às [fontes do projeto](PROJECT_BRIEF.md#fontes-consultadas). Os critérios abaixo são propostas de aceite para o Watchfolio.
 
+**Atualização de 27 de novembro de 2026.** A primeira versão cobre parte de F01–F06. A busca real encontrou *Lost* (2004) no TVmaze, com 121 episódios regulares. O teste de integração executou as rotas do Worker compilado em D1 local descartável e verificou gravação repetida, desmarcação, isolamento entre dois titulares e a indicação do próximo episódio em nova sessão. O teste usa identidades e uma resposta de catálogo controladas. F01 continua pendente de aceite no Chrome do Android e no computador com a mesma conta real. Os demais critérios dessas linhas, incluindo filtros, filmes, especiais, estados e lotes, permanecem abertos. [Teste reproduzível](../web/tests/progress.test.mjs) · [Roteiro no aparelho](PLAN.md#prova-de-séries-no-chrome-do-android)
+
 **A fazer** indica resultado suficientemente definido para planejar. **A definir** indica uma regra ou escolha de produto em aberto. **A validar** indica uma dependência externa ou de plataforma que precisa de prova. Ao concluir um item, registrar o teste realizado e o resultado. Uma maquete com dados fictícios ou um botão sem operação deixa o item pendente.
 
 As dependências identificam o tipo de trabalho. **App** cobre lógica e persistência próprias, **Dados** depende de catálogo ou serviço externo, **Aparelho** exige teste no sistema real e **Pessoas** exige participantes para produzir conteúdo ou comparações coletivas.

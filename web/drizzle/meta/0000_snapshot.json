@@ -1,0 +1,129 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "875792d9-4d8c-4f49-a124-a8873551ee84",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "library_tvmaze_shows": {
+      "name": "library_tvmaze_shows",
+      "columns": {
+        "owner_id": {
+          "name": "owner_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "show_id": {
+          "name": "show_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "details": {
+          "name": "details",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "added_at": {
+          "name": "added_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "library_tvmaze_shows_owner_id_show_id_pk": {
+          "columns": [
+            "owner_id",
+            "show_id"
+          ],
+          "name": "library_tvmaze_shows_owner_id_show_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "watched_tvmaze_episodes": {
+      "name": "watched_tvmaze_episodes",
+      "columns": {
+        "owner_id": {
+          "name": "owner_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "show_id": {
+          "name": "show_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "episode_id": {
+          "name": "episode_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "watched_at": {
+          "name": "watched_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "watched_tvmaze_episodes_owner_id_show_id_library_tvmaze_shows_owner_id_show_id_fk": {
+          "name": "watched_tvmaze_episodes_owner_id_show_id_library_tvmaze_shows_owner_id_show_id_fk",
+          "tableFrom": "watched_tvmaze_episodes",
+          "tableTo": "library_tvmaze_shows",
+          "columnsFrom": [
+            "owner_id",
+            "show_id"
+          ],
+          "columnsTo": [
+            "owner_id",
+            "show_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "watched_tvmaze_episodes_owner_id_show_id_episode_id_pk": {
+          "columns": [
+            "owner_id",
+            "show_id",
+            "episode_id"
+          ],
+          "name": "watched_tvmaze_episodes_owner_id_show_id_episode_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

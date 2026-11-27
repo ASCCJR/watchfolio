@@ -6,7 +6,7 @@ O usuário escolheu o repositório [ASCCJR/watchfolio](https://github.com/ASCCJR
 
 O usuário perdeu o acesso ao TV Time. Recuperar a conta ou exportar e importar seu histórico antigo está fora do projeto. O primeiro uso começa vazio. Uma eventual cópia de segurança abrangeria exclusivamente os dados criados no Watchfolio.
 
-Sites é a base pretendida de publicação e precisa ser avaliado para o aplicativo completo. A autorização desta etapa abrange pesquisar, registrar o contexto e preparar o plano. A [matriz](FEATURE_MATRIX.md) concentra os requisitos e critérios de conclusão. O [plano](PLAN.md) concentra as escolhas técnicas propostas, seus testes e a ordem das entregas.
+Sites é a base pretendida de publicação e precisa ser avaliado para o aplicativo completo. A transferência inicial abrangeu pesquisa, documentação e planejamento. Em 27 de novembro de 2026, o usuário autorizou avançar com a primeira etapa e publicar a versão de teste no Sites com acesso restrito a ele. O aparelho-alvo usa Android com Chrome. A [matriz](FEATURE_MATRIX.md) concentra os requisitos e critérios de conclusão. O [plano](PLAN.md) concentra as escolhas técnicas, seus testes e a ordem das entregas.
 
 ## Ponto de partida verificado em 26 de novembro de 2026
 
